@@ -7,9 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # - name: Create dir
-      #   run: |
-      #     mkdir -p testResults
+      - name: Create dir
+        run: |
+          mkdir -p testResults
 
       - name: Install Node
         uses: actions/setup-node@v4
@@ -21,28 +21,17 @@ jobs:
           npm install -g newman
           npm install -g newman-reporter-htmlextra
 
-      - name: Install ajv
-        run: |
-          npm install -g ajv
-
-      - name: Run collection
+      - name: Run tests
         run: |
           mkdir -p testResults
-          newman run HW5.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra
-
-      # Upload the contents of Test Results directory to workspace
-      - name: Output the run Details
-        # if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: RunReports
-          path: testResults
-          
-      - name: Deploy report to Github Pages
-        # if: always()
+          newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
+      
+      - name: Publish Github Pages
+        if: always()
         uses: peaceiris/actions-gh-pages@v4
-        env:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: testResults   
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: testResults
           keep_files: true
+ 
