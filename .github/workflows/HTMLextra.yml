@@ -7,9 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Create dir
-        run: |
-          mkdir -p testResults
 
       - name: Install Node
         uses: actions/setup-node@v4
@@ -26,12 +23,16 @@ jobs:
           mkdir -p testResults
           newman run HW5.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
       
+      - name: Move report
+        run: |
+          mkdir -p results-history
+          mv testResults/htmlreport.html results-history/index.html
+
       - name: Publish Github Pages
-        if: always()
+        if: ${{ always() }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: testResults
+          publish_dir: results-history
           keep_files: true
- 
