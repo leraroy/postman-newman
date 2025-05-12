@@ -28,7 +28,7 @@ jobs:
       - name: Run collection
         run: |
           mkdir -p testResults
-          newman run HW5.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
+          newman run HW5.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra
 
       # Upload the contents of Test Results directory to workspace
       - name: Output the run Details
