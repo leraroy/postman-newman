@@ -7,9 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Create dir
-        run: |
-          mkdir -p testResults
+      # - name: Create dir
+      #   run: |
+      #     mkdir -p testResults
 
       - name: Install Node
         uses: actions/setup-node@v4
@@ -27,6 +27,7 @@ jobs:
 
       - name: Run collection
         run: |
+          mkdir -p testResults
           newman run HW5.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
 
       # Upload the contents of Test Results directory to workspace
@@ -44,3 +45,4 @@ jobs:
           PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PUBLISH_BRANCH: gh-pages
           PUBLISH_DIR: testResults   
+          keep_files: true
