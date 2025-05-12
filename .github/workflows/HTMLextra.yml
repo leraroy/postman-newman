@@ -24,12 +24,12 @@ jobs:
       - name: Run tests
         run: |
           mkdir -p testResults
-          newman run HW5.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
+          newman run HW5.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/index.html
       
-      - name: Move report
-        run: |
-          mkdir -p results-history
-          mv testResults/htmlreport.html results-history/index.html
+      # - name: Move report
+      #   run: |
+      #     mkdir -p results-history
+      #     mv testResults/htmlreport.html results-history/index.html
 
       - name: Publish Github Pages
         if: ${{ always() }}
@@ -37,5 +37,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: results-history
+          publish_dir: testResults
           keep_files: true
