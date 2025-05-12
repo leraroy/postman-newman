@@ -10,7 +10,8 @@ You can easily export your Postman Collection as a json file from the Postman Ap
 newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json
 ```
 Newman also supports reporters.  
-For instance, to use the Newman HTMLExtra Reporter go to the terminal execute **npm install -g newman-reporter-htmlextra**
+For instance, to use the Newman HTMLExtra Reporter go to the terminal execute  
+**npm install -g newman-reporter-htmlextra**
 ```
 newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra
 ```
