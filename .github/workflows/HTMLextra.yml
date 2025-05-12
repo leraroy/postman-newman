@@ -1,0 +1,47 @@
+name: Newman extra-html-report deploy to github page 
+
+on: push
+
+jobs:
+  automated-test-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create dir
+        run: |
+          mkdir -p testResults
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+        
+      - name: Install newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+
+      - name: Install ajv
+        run: |
+          npm install -g ajv
+
+      - name: Run tests
+        run: |
+          mkdir -p testResults
+          newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
+
+      # Upload the contents of Test Results directory to workspace
+      - name: Output the run Details
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: RunReports
+          path: ./testsResults
+          
+      - name: Deploy report to Github Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: ./testsResults   
